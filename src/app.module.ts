@@ -1,14 +1,26 @@
 import { Module } from '@nestjs/common';
-import { ParametersController } from './parameters/parameters.controller';
-import { WalletController } from './wallet/wallet.controller';
-import { WorkerController } from './workers/worker.controller';
-import { ParametersService } from './parameters/services/parameters.service';
-import { WalletService } from './wallet/services/wallet.service';
-import { WorkerService } from './workers/services/worker.service';
+import { QueueModule } from 'src/shared/events/infrastructure/redis-queue.module';
+import { ConfigModule } from '@nestjs/config';
+// import { NotificationModule } from './notification/notification.module';
+// import { WaveAnalyzerModule } from './wave-analyzer/wave-analyzer.module';
+// import { WaveFormationsModule } from './wave-formations/wave-formations.module';
+// import { TradeModule } from './trade/trade.module';
 
 @Module({
-  imports: [],
-  providers: [ParametersService, WalletService, WorkerService],
-  controllers: [ParametersController, WalletController, WorkerController],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV
+        ? `.env.${process.env.NODE_ENV}`
+        : '.env',
+    }),
+    QueueModule,
+    // WaveAnalyzerModule,
+    // NotificationModule,
+    // WaveFormationsModule,
+    // TradeModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
